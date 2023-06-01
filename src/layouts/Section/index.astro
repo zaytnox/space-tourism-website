@@ -1,0 +1,19 @@
+<section class="section">
+  <slot />
+</section>
+<style>
+  .section {
+    padding-top: 54px;
+  }
+  @media (max-width: calc(1440px - 1px)) {
+    .section {
+      padding: 40px 0 20px;
+    }
+  }
+
+  @media (max-width: calc(768px - 1px)) {
+    .section {
+      padding: 24px 0 20px;
+    }
+  }
+</style>
