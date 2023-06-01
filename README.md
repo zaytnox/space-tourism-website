@@ -34,10 +34,9 @@ Users should be able to:
 - Flexbox
 - CSS Grid
 - Mobile-first workflow
-- [Astro](https://astro.build/) - JS library
+- [Astro](https://astro.build/) - JS Framework
 
 ## Author
 
-- Website - [Add your name here](https://github.com/zaytnox)
 - Frontend Mentor - [@zaytnox](https://www.frontendmentor.io/profile/zaytnox)
 - Twitter - [@zaytnox](https://www.twitter.com/zaytnox)
