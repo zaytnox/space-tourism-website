@@ -1,0 +1,148 @@
+---
+import Html from '../../layouts/Html/index.astro';
+import Section from '../../layouts/Section/index.astro';
+import BackgroundImg from '../../components/BackgroundImg/index.astro';
+import SectionNav from '../../components/SectionNav/index.astro';
+import { getDataFromJson } from '../../utils/getDataFromJson';
+import { getListByData } from '../../utils/getListByData';
+import { getStringPath } from '../../utils/getStringPath';
+import { getPathByURL } from '../../utils/getPathByURL';
+
+const { name } = Astro.params;
+const destinations = await getDataFromJson('destinations');
+const destinationNames = getListByData({ data: destinations, element: 'name' });
+const destination = destinations.find(
+  (destination) => getStringPath(destination.name) === name
+);
+
+export async function getStaticPaths() {
+  const destinationNames = getListByData({
+    data: await getDataFromJson('destinations'),
+    element: 'name',
+    type: 'path',
+  });
+  return destinationNames.map((name) => ({
+    params: { name },
+  }));
+}
+---
+
+<Html
+  title={destination.name}
+  description="Discover more about the destination you want to travel to."
+>
+  <BackgroundImg name="destination" />
+  <Section>
+    <h2 class="subtitle"><span>01</span>Pick your destination</h2>
+    <div class="destination">
+      <img
+        src={getPathByURL(destination.images.webp)}
+        alt={destination.name + ' image'}
+      />
+      <div class="info">
+        <SectionNav type="link" section="destination" list={destinationNames} />
+        <h1 class="title">{destination.name}</h1>
+        <p class="text">
+          {destination.description}
+        </p>
+        <div class="info__metrics">
+          <div>
+            <span>Avg. distance</span>
+            <p class="title">{destination.distance}</p>
+          </div>
+          <div>
+            <span>Est. travel time</span>
+            <p class="title">{destination.travel}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </Section>
+</Html>
+
+<style>
+  /* Destination */
+  .destination {
+    display: flex;
+    gap: 160px;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    padding: 60px 0 30px;
+  }
+  .destination img {
+    width: max-content;
+    height: max-content;
+  }
+  .info {
+    max-width: 560px;
+  }
+  .info > .title {
+    margin-top: 32px;
+  }
+  .info .text {
+    display: block;
+    margin-top: 8px;
+    padding-bottom: 52px;
+    border-bottom: 1px solid rgba(208, 214, 249, 0.25);
+  }
+
+  .info h1 {
+    font-size: 10rem;
+  }
+  .info__metrics {
+    display: flex;
+    gap: 80px;
+    margin-top: 28px;
+  }
+  .info__metrics span {
+    font-size: 1.8rem;
+    text-transform: uppercase;
+    color: var(--lavender-blue);
+  }
+  .info__metrics .title {
+    font-size: 2.8rem;
+    margin-top: 12px;
+  }
+
+  /* Tablet */
+  @media (max-width: calc(1440px - 1px)) {
+    .destination {
+      justify-content: center;
+      gap: 52px;
+    }
+    .destination img {
+      width: 300px;
+      height: 300px;
+    }
+    .info__metrics {
+      justify-content: center;
+    }
+    .info > .title {
+      font-size: 8rem;
+      text-align: center;
+    }
+    .info__metrics span {
+      font-size: 1.4rem;
+    }
+  }
+
+  @media (max-width: calc(768px - 1px)) {
+    .destination {
+      gap: 26px;
+      padding: 32px 0 58px;
+    }
+    .destination img {
+      width: 170px;
+      height: 170px;
+    }
+    .info > .title {
+      margin-top: 20px;
+    }
+    .info__metrics {
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      gap: 32px;
+    }
+  }
+</style>

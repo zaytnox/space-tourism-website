@@ -1,0 +1,177 @@
+---
+import Html from '../../layouts/Html/index.astro';
+import BackgroundImg from '../../components/BackgroundImg/index.astro';
+import SectionNav from '../../components/SectionNav/index.astro';
+import { getDataFromJson } from '../../utils/getDataFromJson';
+import { getStringPath } from '../../utils/getStringPath';
+import { getListByData } from '../../utils/getListByData';
+import { getPathByURL } from '../../utils/getPathByURL';
+
+const { role } = Astro.params;
+const crew = await getDataFromJson('crew');
+const crewRoles = getListByData({ data: crew, element: 'role' });
+const personnel = crew.find(
+  (personnel) => getStringPath(personnel.role) === role
+);
+
+export async function getStaticPaths() {
+  const crewRoles = getListByData({
+    data: await getDataFromJson('crew'),
+    element: 'role',
+    type: 'path',
+  });
+  return crewRoles.map((role) => ({
+    params: { role },
+  }));
+}
+---
+
+<Html
+  title={personnel.role}
+  description="Discover more about the crew in charge of the trips."
+>
+  <BackgroundImg name="crew" />
+  <section class="section">
+    <div>
+      <h2 class="subtitle"><span>02</span>Meet your crew</h2>
+      <img
+        class="image-mobile"
+        src={getPathByURL(personnel.images.webp)}
+        alt={`${personnel.name}. ${personnel.role}`}
+      />
+      <SectionNav
+        type="radio"
+        section="crew"
+        list={crewRoles}
+        device="mobile"
+      />
+      <div class="personnel">
+        <h1 class="title"><span>{personnel.role}</span>{personnel.name}</h1>
+        <p class="text">
+          {personnel.bio}
+        </p>
+      </div>
+      <SectionNav type="radio" section="crew" list={crewRoles} />
+    </div>
+    <img
+      src={getPathByURL(personnel.images.webp)}
+      alt={`${personnel.name}. ${personnel.role}`}
+    />
+  </section>
+</Html>
+
+<style>
+  .section {
+    position: relative;
+    display: flex;
+    padding-top: 54px;
+    justify-content: space-between;
+    min-height: inherit;
+  }
+  .section > div {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding-bottom: 94px;
+  }
+  .section > img {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+  }
+  .personnel {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+  .personnel .title {
+    display: flex;
+    flex-direction: column;
+    font-size: 5.6rem;
+  }
+  .personnel .title span {
+    font-size: 3.2rem;
+    opacity: 0.5;
+  }
+  .personnel .text {
+    margin-top: 28px;
+  }
+  .image-mobile {
+    display: none;
+  }
+
+  /* Tablet */
+  @media (max-width: calc(1440px - 1px)) {
+    .section {
+      flex-direction: column;
+      justify-content: space-between;
+      align-items: center;
+      padding-top: 40px;
+    }
+    .section > div {
+      width: 100%;
+    }
+    .section .subtitle {
+      margin-bottom: 60px;
+    }
+    .personnel {
+      align-items: center;
+    }
+    .personnel .title {
+      font-size: 4rem;
+      text-align: center;
+    }
+    .personnel .title span {
+      font-size: 2.4rem;
+    }
+    .section > div {
+      justify-content: start;
+      margin-bottom: 40px;
+    }
+    .section > img {
+      height: calc(100% - 380px);
+      right: auto;
+    }
+    .personnel .text {
+      max-width: 586px;
+      margin-bottom: 40px;
+    }
+  }
+
+  @media (max-width: calc(768px - 1px)) {
+    .section {
+      padding: 24px 0;
+    }
+    .section .subtitle {
+      margin-bottom: 32px;
+    }
+    .image-mobile {
+      display: block;
+      height: 220px;
+      object-fit: contain;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+      margin-bottom: 32px;
+    }
+    .section > div {
+      padding: 0;
+      margin: 0;
+    }
+    .section > img {
+      display: none;
+    }
+    .personnel {
+      margin-top: 32px;
+    }
+    .personnel .title {
+      font-size: 2.4rem;
+    }
+    .personnel .title span {
+      font-size: 1.6rem;
+      margin-bottom: 8px;
+    }
+    .personnel .text {
+      margin-bottom: 0;
+      margin-top: 16px;
+    }
+  }
+</style>

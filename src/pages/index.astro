@@ -1,0 +1,85 @@
+---
+import Html from '../layouts/Html/index.astro';
+import ExploreButton from '../components/ExploreButton/index.astro';
+import BackgroundImg from '../components/BackgroundImg/index.astro';
+---
+
+<Html
+  title="Home"
+  description="Let’s face it; if you want to go to space, you might as well genuinely go to outer space and not hover kind of on the edge of it. Well sit back, and relax because we’ll give you a truly out of this world experience!"
+>
+  <BackgroundImg name="home" alt="Home" />
+  <section class="explore">
+    <div>
+      <h1 class="title">
+        <span> So, you want to travel to</span>
+        Space
+      </h1>
+      <p class="text">
+        Let’s face it; if you want to go to space, you might as well genuinely
+        go to outer space and not hover kind of on the edge of it. Well sit
+        back, and relax because we’ll give you a truly out of this world
+        experience!
+      </p>
+    </div>
+    <ExploreButton />
+  </section>
+</Html>
+
+<style>
+  .explore {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    width: 100%;
+    align-items: end;
+    padding-top: 240px;
+  }
+  .explore div {
+    display: flex;
+    flex-direction: column;
+    max-width: 450px;
+    gap: 24px;
+  }
+  .explore h1 {
+    display: flex;
+    flex-direction: column;
+    font-size: 15rem;
+    gap: 24px;
+  }
+  .explore span {
+    font-size: 2.8rem;
+    letter-spacing: 4.725px;
+    font-family: var(--font-barlow-condensed);
+    color: var(--lavender-blue);
+  }
+
+  @media (max-width: calc(1440px - 1px)) {
+    .explore .title span {
+      text-align: center;
+      font-size: 2rem;
+    }
+    .explore {
+      min-height: inherit;
+      justify-content: center;
+      align-items: center;
+      gap: 80px;
+      padding: 100px 0 20px;
+    }
+  }
+
+  @media (max-width: calc(768px - 1px)) {
+    .explore {
+      padding-top: 48px;
+      gap: 80px;
+    }
+    .explore .title span {
+      font-size: 1.6rem;
+      letter-spacing: 2.7px;
+    }
+    .explore .title {
+      font-size: 8rem;
+      text-align: center;
+    }
+  }
+</style>

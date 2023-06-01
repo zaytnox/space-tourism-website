@@ -1,0 +1,142 @@
+---
+import Html from '../../layouts/Html/index.astro';
+import Section from '../../layouts/Section/index.astro';
+import BackgroundImg from '../../components/BackgroundImg/index.astro';
+import SectionNav from '../../components/SectionNav/index.astro';
+import { getDataFromJson } from '../../utils/getDataFromJson';
+import { getListByData } from '../../utils/getListByData';
+import { getStringPath } from '../../utils/getStringPath';
+import { getPathByURL } from '../../utils/getPathByURL';
+
+const { name } = Astro.params;
+const technologies = await getDataFromJson('technologies');
+const technologyNames = getListByData({ data: technologies, element: 'name' });
+const technology = technologies.find(
+  (technology) => getStringPath(technology.name) === name
+);
+
+export async function getStaticPaths() {
+  const technologyNames = getListByData({
+    data: await getDataFromJson('technologies'),
+    element: 'name',
+    type: 'path',
+  });
+  return technologyNames.map((name) => ({
+    params: { name },
+  }));
+}
+---
+
+<Html
+  title={technology.name}
+  description="Discover more about the technology used to make the trips."
+>
+  <BackgroundImg name="technology" />
+  <Section>
+    <h2 class="subtitle"><span>03</span>SPACE LAUNCH 101</h2>
+    <div class="technology">
+      <div class="info">
+        <img
+          class="landscape"
+          src={getPathByURL(technology.images.landscape)}
+          alt={technology.name + ' image'}
+        />
+        <SectionNav type="circle" section="technology" list={technologyNames} />
+        <div>
+          <h1 class="title">
+            <span class="subtitle">THE TERMINOLOGY…</span>
+            {technology.name}
+          </h1>
+          <p class="text">
+            {technology.description}
+          </p>
+        </div>
+      </div>
+      <img
+        class="portrait"
+        src={getPathByURL(technology.images.portrait)}
+        alt={technology.name + ' image'}
+      />
+    </div>
+  </Section>
+</Html>
+
+<style>
+  :global(main) {
+    padding: 0 0 0 165px;
+  }
+  .destination-section {
+    padding: 64px 0;
+  }
+
+  /* technology */
+  .technology {
+    display: flex;
+    justify-content: space-between;
+    padding-top: 26px;
+  }
+  .technology .title {
+    display: flex;
+    flex-direction: column;
+    font-size: 5.6rem;
+  }
+  .technology .subtitle {
+    font-size: 1.6rem;
+    letter-spacing: 2.7px;
+    color: var(--lavender-blue);
+    margin-bottom: 12px;
+  }
+  .technology .text {
+    display: block;
+    margin-top: 16px;
+  }
+  .info {
+    display: flex;
+    gap: 80px;
+    align-items: center;
+  }
+  .landscape {
+    display: none;
+  }
+
+  /* Tablet */
+  @media (max-width: calc(1440px - 1px)) {
+    .portrait {
+      display: none;
+    }
+    .landscape {
+      display: block;
+      width: 100%;
+    }
+    .info {
+      width: 100%;
+      flex-direction: column;
+      gap: 52px;
+    }
+    :global(main) {
+      padding: 0;
+    }
+    .subtitle {
+      padding: 0 40px;
+    }
+    .info > div {
+      max-width: 458px;
+      text-align: center;
+    }
+  }
+
+  @media (max-width: calc(768px - 1px)) {
+    .technology .title {
+      font-size: 2.4rem;
+    }
+    .technology .subtitle {
+      font-size: 1.4rem;
+    }
+    .info {
+      gap: 32px;
+    }
+    .info > div {
+      padding: 0 24px;
+    }
+  }
+</style>

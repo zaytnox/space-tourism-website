@@ -1,0 +1,53 @@
+---
+import Html from '../../layouts/Html/index.astro';
+import BackgroundImg from '../../components/BackgroundImg/index.astro';
+---
+
+<Html title="Error 404 | Space tourism website">
+  <BackgroundImg name="home" alt="Error 404" />
+  <section class="section">
+    <h1 class="title">
+      <span class="subtitle">
+        Oh, the page you're looking for is not available</span
+      >
+      error 404
+    </h1>
+  </section>
+</Html>
+
+<style>
+  .section {
+    display: grid;
+    place-content: center;
+    min-height: inherit;
+  }
+  .title {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    width: max-content;
+    text-align: center;
+    font-size: 15rem;
+    gap: 8px;
+  }
+  .subtitle {
+    color: var(--lavender-blue);
+  }
+
+  @media (max-width: calc(1440px - 1px)) {
+    .title {
+      font-size: 12rem;
+    }
+  }
+
+  @media (max-width: calc(768px - 1px)) {
+    .title {
+      font-size: 8.6rem;
+      width: auto;
+      line-height: 80px;
+    }
+    .subtitle {
+      line-height: 26px;
+    }
+  }
+</style>
