@@ -1,0 +1,186 @@
+---
+import logo from '/assets/shared/logo.svg';
+const pathname = new URL(Astro.request.url).pathname;
+const removeParams = (pathname) => pathname.split('/').splice(0, 2).join('/');
+const router = {
+  home: '/',
+  destination: '/destination/moon',
+  crew: '/crew/commander',
+  technology: '/technology/launch-vehicle',
+};
+const routes = Object.entries(router);
+---
+
+<script>
+  const toggleClass = () => {
+    const navigatorElement = document.querySelector('.navigator');
+    navigatorElement.classList.toggle('open');
+  };
+  document.querySelector('.menu').addEventListener('click', toggleClass);
+  document.querySelector('.close').addEventListener('click', toggleClass);
+</script>
+
+<header class="header">
+  <a class="logo" href="/">
+    <img src={logo} alt="Explore the space. Logo" />
+  </a>
+  <nav class="navigator">
+    <button class="close" aria-label="close menu button">
+      <img src="/assets/shared/icon-close.svg" alt="close menu icon" />
+    </button>
+    <ul>
+      {
+        routes.map((route, index) => {
+          const href = route[1];
+          return (
+            <li>
+              <a
+                href={href}
+                class={
+                  removeParams(pathname) === removeParams(href) && 'active'
+                }
+              >
+                <span>{`0${index}`}</span>
+                {route[0].toUpperCase()}
+              </a>
+            </li>
+          );
+        })
+      }
+    </ul>
+  </nav>
+  <button class="menu" aria-label="open menu button">
+    <img src="/assets/shared/icon-hamburger.svg" alt="menu icon" />
+  </button>
+</header>
+
+<style>
+  .menu {
+    display: none;
+  }
+  .close {
+    display: none;
+  }
+  .header {
+    position: relative;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-top: 40px;
+    margin-left: 55px;
+    font-family: 'Barlow Condensed', sans-serif;
+  }
+  .logo img {
+    display: block;
+    width: 48px;
+    height: 48px;
+  }
+  .header::before {
+    content: '';
+    position: absolute;
+    left: 112px;
+    display: block;
+    width: 32%;
+    height: 1px;
+    background-color: var(--white);
+    opacity: 0.3;
+    z-index: 1;
+  }
+  .navigator {
+    padding: 0 165px 0 120px;
+    background-color: rgba(255, 255, 255, 0.04);
+    backdrop-filter: blur(40.7742px);
+    -webkit-backdrop-filter: blur(40.7742px);
+    letter-spacing: 2.7px;
+  }
+  .navigator ul {
+    display: flex;
+    gap: 48px;
+  }
+  .navigator span {
+    font-weight: 700;
+    margin-right: 12px;
+  }
+  .navigator a {
+    display: block;
+    padding: 40px 0;
+    color: var(--white);
+    font-size: 1.6rem;
+    border-bottom: 3px solid transparent;
+    transition: border 0.5s;
+  }
+  .navigator a.active {
+    border-color: var(--white);
+  }
+  .navigator a:hover {
+    border-color: rgba(255, 255, 255, 0.5);
+  }
+
+  /* Tablet */
+  @media (max-width: calc(1440px - 1px)) {
+    .header {
+      padding-top: 0;
+      margin-left: 40px;
+    }
+    .header::before {
+      display: none;
+    }
+    .navigator a span {
+      display: none;
+    }
+    .navigator {
+      padding: 0 48px;
+    }
+  }
+  /* mobile */
+  @media (max-width: calc(768px - 1px)) {
+    .header {
+      margin: 0;
+      padding: 24px 24px 0;
+    }
+    .logo img {
+      width: 40px;
+      height: 40px;
+    }
+    .close {
+      display: block;
+      margin-right: 20px;
+    }
+    .close img {
+      display: block;
+    }
+    .navigator {
+      position: fixed;
+      top: 0;
+      right: 0;
+      z-index: 10;
+      display: flex;
+      flex-direction: column;
+      align-items: end;
+      height: 100%;
+      gap: 60px;
+      padding: 32px 0;
+      transform: translateX(100%);
+      transition: transform 0.5s;
+    }
+    .navigator.open {
+      transform: translateX(0%);
+    }
+    .navigator ul {
+      flex-direction: column;
+      gap: 18px;
+    }
+    .navigator a {
+      display: flex;
+      padding: 8px 80px 8px 32px;
+      border-right: 3px solid transparent;
+      border-bottom: none;
+    }
+    .navigator a span {
+      display: block;
+    }
+    .menu {
+      display: block;
+    }
+  }
+</style>

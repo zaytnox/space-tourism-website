@@ -1,0 +1,36 @@
+<a href="/destination/moon" class="explore">EXPLORE</a>
+
+<style>
+  .explore {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 280px;
+    height: 280px;
+    border-radius: 50%;
+    font-size: 3.2rem;
+    font-family: var(--font-bellefair);
+    color: var(--rich-black);
+    transition: outline 0.5s;
+    background-color: var(--white);
+    outline: 0px solid rgba(255, 255, 255, 0.25);
+  }
+  .explore:hover {
+    outline-width: 80px;
+  }
+
+  @media (max-width: calc(1440px - 1px)) {
+    .explore {
+      width: 240px;
+      height: 240px;
+    }
+  }
+
+  @media (max-width: calc(768px - 1px)) {
+    .explore {
+      width: 150px;
+      height: 150px;
+      font-size: 2rem;
+    }
+  }
+</style>
